@@ -36,4 +36,30 @@ defmodule Porter2.WordSpec do
       |> expect |> to( eq "why" )
     end
   end
+
+  describe ".remove_apostrophe_s_suffix" do
+    it "should remove a 's' suffix" do
+      "foo's'"
+      |> Porter2.Word.remove_apostrophe_s_suffix
+      |> expect |> to( eq "foo" )
+    end
+
+    it "should remove a 's suffix" do
+      "germany's"
+      |> Porter2.Word.remove_apostrophe_s_suffix
+      |> expect |> to( eq "germany" )
+    end
+
+    it "should remove a ' suffix" do
+      "his'"
+      |> Porter2.Word.remove_apostrophe_s_suffix
+      |> expect |> to( eq "his" )
+    end
+
+    it "should not remove other suffixes" do
+      "his"
+      |> Porter2.Word.remove_apostrophe_s_suffix
+      |> expect |> to( eq "his" )
+    end
+  end
 end
