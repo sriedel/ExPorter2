@@ -54,6 +54,34 @@ defmodule Porter2.Word do
     end
   end
 
+  defp replace_reversed_suffixes( "de" <> reversed_prefix = word ) do
+    if Regex.match?( ~r/[aeiou]/, reversed_prefix ) do
+      reversed_prefix 
+      |> replace_adverb_suffix
+      |> String.reverse
+    else
+      String.reverse( word )
+    end
+  end
+  defp replace_reversed_suffixes( "gni" <> reversed_prefix = word ) do
+    if Regex.match?( ~r/[aeiou]/, reversed_prefix ) do
+      reversed_prefix 
+      |> replace_adverb_suffix
+      |> String.reverse
+    else
+      String.reverse( word )
+    end
+  end
+  defp replace_reversed_suffixes( "ylgni" <> reversed_prefix = word ) do
+    if Regex.match?( ~r/[aeiou]/, reversed_prefix ) do
+      reversed_prefix 
+      |> replace_adverb_suffix
+      |> String.reverse
+    else
+      String.reverse( word )
+    end
+  end
+
   defp replace_adverb_suffix( "ta" <> _reversed_prefix = word ) do
     "e" <> word
   end

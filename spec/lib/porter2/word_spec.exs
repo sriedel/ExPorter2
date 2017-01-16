@@ -142,6 +142,58 @@ defmodule Porter2.WordSpec do
     it "should replace an 'eedly' suffix with 'ee' if it is in the r1 region"
     it "should not replace an 'eedly' suffix with 'ee' if it is not in the r1 region"
 
+    context "word with an 'ed' suffix" do
+      context "when the preceeding word part contains a vowel" do
+        it "should replace the suffix with 'e' if the suffix is preceeded by 'at'" do
+          "luxuriated"
+          |> Porter2.Word.replace_suffixes
+          |> expect |> to( eq "luxuriate" )
+        end
+
+        it "should replace the suffix with 'e' if the suffix is preceeded by 'bl'" do
+          "somethingbled"
+          |> Porter2.Word.replace_suffixes
+          |> expect |> to( eq "somethingble" )
+        end
+
+        it "should replace the suffix with 'e' if the suffix is preceeded by 'iz'" do
+          "somethingized"
+          |> Porter2.Word.replace_suffixes
+          |> expect |> to( eq "somethingize" )
+        end
+
+        it "should remove the suffix and remove one of a doubled letter if the suffix is preceeded by a doubled letter" do
+          "hopped"
+          |> Porter2.Word.replace_suffixes
+          |> expect |> to( eq "hop" )
+        end
+
+        it "should replace the suffix with an 'e' if the word without the suffix is short" do
+          "hoped"
+          |> Porter2.Word.replace_suffixes
+          |> expect |> to( eq "hope" )
+        end
+
+        it "otherwise it should just remove the suffix" do
+          "awarded"
+          |> Porter2.Word.replace_suffixes
+          |> expect |> to( eq "award" )
+        end
+      end
+
+      it "should not change the word if the preceeding word part does not contain a vowel" do
+        "med"
+        |> Porter2.Word.replace_suffixes
+        |> expect |> to( eq "med" )
+      end
+
+      it "should not change the word if there is no preceeding word part" do
+        "ed"
+        |> Porter2.Word.replace_suffixes
+        |> expect |> to( eq "ed" )
+      end
+    end
+
     context "word with an 'edly' suffix" do
       context "when the preceeding word part contains a vowel" do
         it "should replace the suffix with 'e' if the suffix is preceeded by 'at'" do
@@ -175,9 +227,9 @@ defmodule Porter2.WordSpec do
         end
 
         it "otherwise it should just remove the suffix" do
-          "awkwardedly"
+          "awardedly"
           |> Porter2.Word.replace_suffixes
-          |> expect |> to( eq "awkward" )
+          |> expect |> to( eq "award" )
         end
       end
 
@@ -194,12 +246,110 @@ defmodule Porter2.WordSpec do
       end
     end
 
-    it "should replace an 'ing' suffix with 'e' if the suffix is preceeded by 'at'"
-    it "should replace an 'ing' suffix with 'e' if the suffix is preceeded by 'bl'"
-    it "should replace an 'ing' suffix with 'e' if the suffix is preceeded by 'iz'"
-    it "should remove an 'ing' suffix and remove one of a doubled letter if the suffix is preceeded by a doubled letter"
-    it "should replace an 'ing' suffix with an 'e' if the word without the suffix is short"
-    it "should remove an 'ing' suffix if it is not preceeded by 'at', 'bl' or 'iz'"
+    context "word with an 'ing' suffix" do
+      context "when the preceeding word part contains a vowel" do
+        it "should replace the suffix with 'e' if the suffix is preceeded by 'at'" do
+          "luxuriating"
+          |> Porter2.Word.replace_suffixes
+          |> expect |> to( eq "luxuriate" )
+        end
+
+        it "should replace the suffix with 'e' if the suffix is preceeded by 'bl'" do
+          "somethingbling"
+          |> Porter2.Word.replace_suffixes
+          |> expect |> to( eq "somethingble" )
+        end
+
+        it "should replace the suffix with 'e' if the suffix is preceeded by 'iz'" do
+          "somethingizing"
+          |> Porter2.Word.replace_suffixes
+          |> expect |> to( eq "somethingize" )
+        end
+
+        it "should remove the suffix and remove one of a doubled letter if the suffix is preceeded by a doubled letter" do
+          "hopping"
+          |> Porter2.Word.replace_suffixes
+          |> expect |> to( eq "hop" )
+        end
+
+        it "should replace the suffix with an 'e' if the word without the suffix is short" do
+          "hoping"
+          |> Porter2.Word.replace_suffixes
+          |> expect |> to( eq "hope" )
+        end
+
+        it "otherwise it should just remove the suffix" do
+          "awarding"
+          |> Porter2.Word.replace_suffixes
+          |> expect |> to( eq "award" )
+        end
+      end
+
+      it "should not change the word if the preceeding word part does not contain a vowel" do
+        "ming"
+        |> Porter2.Word.replace_suffixes
+        |> expect |> to( eq "ming" )
+      end
+
+      it "should not change the word if there is no preceeding word part" do
+        "ing"
+        |> Porter2.Word.replace_suffixes
+        |> expect |> to( eq "ing" )
+      end
+    end
+
+    context "word with an 'ingly' suffix" do
+      context "when the preceeding word part contains a vowel" do
+        it "should replace the suffix with 'e' if the suffix is preceeded by 'at'" do
+          "luxuriatingly"
+          |> Porter2.Word.replace_suffixes
+          |> expect |> to( eq "luxuriate" )
+        end
+
+        it "should replace the suffix with 'e' if the suffix is preceeded by 'bl'" do
+          "somethingblingly"
+          |> Porter2.Word.replace_suffixes
+          |> expect |> to( eq "somethingble" )
+        end
+
+        it "should replace the suffix with 'e' if the suffix is preceeded by 'iz'" do
+          "somethingizingly"
+          |> Porter2.Word.replace_suffixes
+          |> expect |> to( eq "somethingize" )
+        end
+
+        it "should remove the suffix and remove one of a doubled letter if the suffix is preceeded by a doubled letter" do
+          "hoppingly"
+          |> Porter2.Word.replace_suffixes
+          |> expect |> to( eq "hop" )
+        end
+
+        it "should replace the suffix with an 'e' if the word without the suffix is short" do
+          "hopingly"
+          |> Porter2.Word.replace_suffixes
+          |> expect |> to( eq "hope" )
+        end
+
+        it "otherwise it should just remove the suffix" do
+          "awardingly"
+          |> Porter2.Word.replace_suffixes
+          |> expect |> to( eq "award" )
+        end
+      end
+
+      it "should not change the word if the preceeding word part does not contain a vowel" do
+        "mingly"
+        |> Porter2.Word.replace_suffixes
+        |> expect |> to( eq "mingly" )
+      end
+
+      it "should not change the word if there is no preceeding word part" do
+        "ingly"
+        |> Porter2.Word.replace_suffixes
+        |> expect |> to( eq "ingly" )
+      end
+    end
+
 
     it "should replace an 'ingly' suffix with 'e' if the suffix is preceeded by 'at'"
     it "should replace an 'ingly' suffix with 'e' if the suffix is preceeded by 'bl'"
