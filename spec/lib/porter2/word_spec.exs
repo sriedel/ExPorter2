@@ -1,5 +1,9 @@
 defmodule Porter2.WordSpec do
   use ESpec
+  
+  def expect_processed_word_to_match( fun, word, expected ) do
+    expect( fun.( word ) ) |> to( eq expected )
+  end
 
   describe ".trim_leading_apostrophe" do
     it "should remove a leading apostrophe in a word" do
