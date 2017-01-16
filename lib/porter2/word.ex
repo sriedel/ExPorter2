@@ -1,9 +1,9 @@
 defmodule Porter2.Word do
-  def trim_leading_apostrophe( "'"<> rest = word ), do: rest
+  def trim_leading_apostrophe( "'" <> rest ), do: rest
   def trim_leading_apostrophe( word ), do: word
 
   def transform_vowel_ys( word ) do
-    Regex.replace( ~r/(\A|[aeiou])y/, word, "\\1Y" )
+    Regex.replace( ~r/(\A|[aeiouy])y/, word, "\\1Y" )
   end
 
   def remove_apostrophe_s_suffix( word ) do 
@@ -14,111 +14,102 @@ defmodule Porter2.Word do
     word
     |> String.reverse
     |> replace_reversed_suffixes
+    |> String.reverse
   end
 
-  defp replace_reversed_suffixes( "sess" <> reversed_prefix = word ) do
-    String.reverse( reversed_prefix ) <> "ss"
+  defp contains_vowels?( word ) do
+    Regex.match?( ~r/[aeiouy]/, word )
   end
 
-  defp replace_reversed_suffixes( "dei" <> reversed_prefix = word ) do
+  defp replace_reversed_suffixes( "sess" <> reversed_prefix ) do
+    "ss" <> reversed_prefix
+  end
+
+  defp replace_reversed_suffixes( "dei" <> reversed_prefix ) do
     new_suffix = case String.length( reversed_prefix ) do
-                   x when x <= 1 -> "ie"
+                   x when x <= 1 -> "ei"
                    _ -> "i"
                  end
-    String.reverse( reversed_prefix ) <> new_suffix
+    new_suffix <> reversed_prefix 
   end
 
-  defp replace_reversed_suffixes( "sei" <> reversed_prefix = word ) do
+  defp replace_reversed_suffixes( "sei" <> reversed_prefix ) do
     new_suffix = case String.length( reversed_prefix ) do
-                   x when x <= 1 -> "ie"
+                   x when x <= 1 -> "ei"
                    _ -> "i"
                  end
-    String.reverse( reversed_prefix ) <> new_suffix
+    new_suffix <> reversed_prefix
   end
 
   defp replace_reversed_suffixes( "s" <> reversed_prefix = word ) do
     if Regex.match?( ~r/^.[^aeiouy]*$/, reversed_prefix ) do
-      String.reverse( word )
+      word
     else
-      String.reverse( reversed_prefix )
+      reversed_prefix
     end
   end
 
   defp replace_reversed_suffixes( "yldee" <> reversed_prefix = word ) do
-    suffix_in_r1 = word
-                   |> String.reverse
-                   |> r1_region
-                   |> String.ends_with?( "eedly" )
-    if suffix_in_r1 do
-      String.reverse( reversed_prefix ) <> "ee"
-    else
-      String.reverse( word )
+    case reverse_r1_region( word ) do
+      "yldee" <> _rest -> "ee" <> reversed_prefix
+      _                -> word
     end
   end
 
   defp replace_reversed_suffixes( "dee" <> reversed_prefix = word ) do
-    suffix_in_r1 = word
-                   |> String.reverse
-                   |> r1_region
-                   |> String.ends_with?( "eed" )
-    if suffix_in_r1 do
-      String.reverse( reversed_prefix ) <> "ee"
-    else
-      String.reverse( word )
+    case reverse_r1_region( word ) do
+      "dee" <> _rest -> "ee" <> reversed_prefix
+      _                -> word
     end
   end
 
   defp replace_reversed_suffixes( "ylde" <> reversed_prefix = word ) do
-    if Regex.match?( ~r/[aeiou]/, reversed_prefix ) do
+    if contains_vowels?( reversed_prefix ) do
       reversed_prefix 
       |> replace_adverb_suffix
-      |> String.reverse
     else
-      String.reverse( word )
+      word
     end
   end
 
   defp replace_reversed_suffixes( "de" <> reversed_prefix = word ) do
-    if Regex.match?( ~r/[aeiou]/, reversed_prefix ) do
+    if contains_vowels?( reversed_prefix ) do
       reversed_prefix 
       |> replace_adverb_suffix
-      |> String.reverse
     else
-      String.reverse( word )
+      word
     end
   end
   defp replace_reversed_suffixes( "gni" <> reversed_prefix = word ) do
-    if Regex.match?( ~r/[aeiou]/, reversed_prefix ) do
+    if contains_vowels?( reversed_prefix ) do
       reversed_prefix 
       |> replace_adverb_suffix
-      |> String.reverse
     else
-      String.reverse( word )
+      word
     end
   end
   defp replace_reversed_suffixes( "ylgni" <> reversed_prefix = word ) do
-    if Regex.match?( ~r/[aeiou]/, reversed_prefix ) do
+    if contains_vowels?( reversed_prefix ) do
       reversed_prefix 
       |> replace_adverb_suffix
-      |> String.reverse
     else
-      String.reverse( word )
+      word
     end
   end
 
   defp replace_reversed_suffixes( "y" <> reversed_prefix = word ) do
-    if Regex.match?( ~r/^[^aeiou].+$/, reversed_prefix ) do
-      String.reverse( reversed_prefix ) <> "i"
+    if Regex.match?( ~r/^[^aeiouy].+$/, reversed_prefix ) do
+      "i" <> reversed_prefix
     else
-      String.reverse( word )
+      word
     end
   end
 
   defp replace_reversed_suffixes( "Y" <> reversed_prefix = word ) do
-    if Regex.match?( ~r/^[^aeiou].+$/, reversed_prefix ) do
-      String.reverse( reversed_prefix ) <> "i"
+    if Regex.match?( ~r/^[^aeiouy].+$/, reversed_prefix ) do
+      "i" <> reversed_prefix
     else
-      String.reverse( word )
+      word
     end
   end
 
@@ -182,7 +173,14 @@ defmodule Porter2.Word do
   end
 
   def r1_region( word ) do
-    case Regex.run( ~r/(?<=[aeiou][^aeiou]).*$/, word, caputure: :first ) do
+    case Regex.run( ~r/(?<=[aeiouy][^aeiouy]).*$/, word, capture: :first ) do
+      x when is_list( x ) -> hd( x )
+      _                   -> ""
+    end
+  end
+
+  def reverse_r1_region( drow ) do
+    case Regex.run( ~r/^.*(?=[^aeiouy][aeiouy])/, drow, capture: :first ) do
       x when is_list( x ) -> hd( x )
       _                   -> ""
     end

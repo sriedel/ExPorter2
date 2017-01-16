@@ -346,6 +346,44 @@ defmodule Porter2.WordSpec do
     end
   end
 
+  context ".reverse_r1_region" do
+    context "for a word that contains a non-vowel following a vowel" do
+      it "should return the word part after this non-vowel" do
+        "foobar"
+        |> String.reverse
+        |> Porter2.Word.reverse_r1_region
+        |> expect |> to( eq "ra" )
+      end
+    end
+
+    context "for a word that as no non-vowel following a vowel" do
+      it "should return \"\"" do
+        "foo"
+        |> String.reverse
+        |> Porter2.Word.reverse_r1_region
+        |> expect |> to( eq "" )
+      end
+    end
+
+    context "for a word that has no word part following the vowel <> non-vowel sequence" do
+      it "should return \"\"" do
+        "it"
+        |> String.reverse
+        |> Porter2.Word.reverse_r1_region
+        |> expect |> to( eq "" )
+      end
+    end
+
+    context "for a word that has no vowel" do
+      it "should return \"\"" do
+        "psst"
+        |> String.reverse
+        |> Porter2.Word.reverse_r1_region
+        |> expect |> to( eq "" )
+      end
+    end
+  end
+
   context ".word_ends_in_short_syllable?" do
     context "for a word with a suffix of the type 'non-vowel' <> 'vowel' <> 'non-vowel other than w, x or Y'" do
       it "should return true" do
