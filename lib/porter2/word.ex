@@ -28,7 +28,7 @@ defmodule Porter2.Word do
   defp replace_reversed_suffixes( "dei" <> reversed_prefix ) do
     new_suffix = case String.length( reversed_prefix ) do
                    x when x <= 1 -> "ei"
-                   _ -> "i"
+                   _             -> "i"
                  end
     new_suffix <> reversed_prefix 
   end
@@ -36,7 +36,7 @@ defmodule Porter2.Word do
   defp replace_reversed_suffixes( "sei" <> reversed_prefix ) do
     new_suffix = case String.length( reversed_prefix ) do
                    x when x <= 1 -> "ei"
-                   _ -> "i"
+                   _             -> "i"
                  end
     new_suffix <> reversed_prefix
   end
@@ -59,7 +59,7 @@ defmodule Porter2.Word do
   defp replace_reversed_suffixes( "dee" <> reversed_prefix = word ) do
     case reverse_r1_region( word ) do
       "dee" <> _rest -> "ee" <> reversed_prefix
-      _                -> word
+      _              -> word
     end
   end
 
@@ -125,39 +125,39 @@ defmodule Porter2.Word do
     "e" <> word
   end
 
-  defp replace_adverb_suffix( "bb" <> reversed_prefix = _word ) do
+  defp replace_adverb_suffix( "bb" <> reversed_prefix ) do
     "b" <> reversed_prefix
   end
 
-  defp replace_adverb_suffix( "dd" <> reversed_prefix = _word ) do
+  defp replace_adverb_suffix( "dd" <> reversed_prefix ) do
     "d" <> reversed_prefix
   end
 
-  defp replace_adverb_suffix( "ff" <> reversed_prefix = _word ) do
+  defp replace_adverb_suffix( "ff" <> reversed_prefix ) do
     "f" <> reversed_prefix
   end
 
-  defp replace_adverb_suffix( "gg" <> reversed_prefix = _word ) do
+  defp replace_adverb_suffix( "gg" <> reversed_prefix ) do
     "g" <> reversed_prefix
   end
 
-  defp replace_adverb_suffix( "mm" <> reversed_prefix = _word ) do
+  defp replace_adverb_suffix( "mm" <> reversed_prefix ) do
     "m" <> reversed_prefix
   end
 
-  defp replace_adverb_suffix( "nn" <> reversed_prefix = _word ) do
+  defp replace_adverb_suffix( "nn" <> reversed_prefix ) do
     "n" <> reversed_prefix
   end
 
-  defp replace_adverb_suffix( "pp" <> reversed_prefix = _word ) do
+  defp replace_adverb_suffix( "pp" <> reversed_prefix ) do
     "p" <> reversed_prefix
   end
 
-  defp replace_adverb_suffix( "rr" <> reversed_prefix = _word ) do
+  defp replace_adverb_suffix( "rr" <> reversed_prefix ) do
     "r" <> reversed_prefix
   end
 
-  defp replace_adverb_suffix( "tt" <> reversed_prefix = _word ) do
+  defp replace_adverb_suffix( "tt" <> reversed_prefix ) do
     "t" <> reversed_prefix
   end
 
