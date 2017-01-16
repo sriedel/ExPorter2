@@ -42,10 +42,10 @@ defmodule Porter2.Word do
   end
 
   defp replace_reversed_suffixes( "s" <> reversed_prefix = word ) do
-    if Regex.match?( ~r/^.[^aeiouy]*$/, reversed_prefix ) do
-      word
-    else
+    if Regex.match?( ~r/^.+[aeiouy]/, reversed_prefix ) do
       reversed_prefix
+    else
+      word
     end
   end
 
