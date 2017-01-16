@@ -137,10 +137,33 @@ defmodule Porter2.WordSpec do
       end
     end
 
-    it "should replace an 'eed' suffix with 'ee' if it is in the r1 region"
-    it "should not replace an 'eed' suffix if it is not in the r1 region"
-    it "should replace an 'eedly' suffix with 'ee' if it is in the r1 region"
-    it "should not replace an 'eedly' suffix with 'ee' if it is not in the r1 region"
+    context "word with an 'eed' suffix" do
+      it "should replace the suffix with 'ee' if the suffix is in the r1 region" do
+        "stingweed"
+        |> Porter2.Word.replace_suffixes
+        |> expect |> to( eq "stringwee" )
+      end
+
+      it "should not replace the suffix if the suffix is not in the r1 region" do
+        "weed"
+        |> Porter2.Word.replace_suffixes
+        |> expect |> to( eq "weed" )
+      end
+    end
+
+    context "word with an 'eedly' suffix" do
+      it "should replace the suffix with 'ee' if the suffix is in the r1 region" do
+        "stingweedly" 
+        |> Porter2.Word.replace_suffixes
+        |> expect |> to( eq "stingwee" )
+      end
+
+      it "should not replace the suffix with 'ee' if the suffix is not in the r1 region" do
+        "weedly"
+        |> Porter2.Word.replace_suffixes
+        |> expect |> to( eq "weedly" )
+      end
+    end
 
     context "word with an 'ed' suffix" do
       context "when the preceeding word part contains a vowel" do
