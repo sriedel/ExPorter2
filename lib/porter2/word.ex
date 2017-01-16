@@ -44,6 +44,30 @@ defmodule Porter2.Word do
     end
   end
 
+  defp replace_reversed_suffixes( "yldee" <> reversed_prefix = word ) do
+    suffix_in_r1 = word
+                   |> String.reverse
+                   |> r1_region
+                   |> String.ends_with?( "eedly" )
+    if suffix_in_r1 do
+      String.reverse( reversed_prefix ) <> "ee"
+    else
+      String.reverse( word )
+    end
+  end
+
+  defp replace_reversed_suffixes( "dee" <> reversed_prefix = word ) do
+    suffix_in_r1 = word
+                   |> String.reverse
+                   |> r1_region
+                   |> String.ends_with?( "eed" )
+    if suffix_in_r1 do
+      String.reverse( reversed_prefix ) <> "ee"
+    else
+      String.reverse( word )
+    end
+  end
+
   defp replace_reversed_suffixes( "ylde" <> reversed_prefix = word ) do
     if Regex.match?( ~r/[aeiou]/, reversed_prefix ) do
       reversed_prefix 
@@ -77,6 +101,22 @@ defmodule Porter2.Word do
       reversed_prefix 
       |> replace_adverb_suffix
       |> String.reverse
+    else
+      String.reverse( word )
+    end
+  end
+
+  defp replace_reversed_suffixes( "y" <> reversed_prefix = word ) do
+    if Regex.match?( ~r/^[^aeiou].+$/, reversed_prefix ) do
+      String.reverse( reversed_prefix ) <> "i"
+    else
+      String.reverse( word )
+    end
+  end
+
+  defp replace_reversed_suffixes( "Y" <> reversed_prefix = word ) do
+    if Regex.match?( ~r/^[^aeiou].+$/, reversed_prefix ) do
+      String.reverse( reversed_prefix ) <> "i"
     else
       String.reverse( word )
     end
@@ -143,9 +183,8 @@ defmodule Porter2.Word do
 
   def r1_region( word ) do
     case Regex.run( ~r/(?<=[aeiou][^aeiou]).*$/, word, caputure: :first ) do
-      [ "" ]              -> nil
       x when is_list( x ) -> hd( x )
-      _                   -> nil
+      _                   -> ""
     end
   end
 
@@ -154,7 +193,7 @@ defmodule Porter2.Word do
   end
 
   def is_word_short?( word ) do
-    ( r1_region( word ) == nil ) && word_ends_in_short_syllable?( word )
+    ( r1_region( word ) == "" ) && word_ends_in_short_syllable?( word )
   end
 
 end

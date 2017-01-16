@@ -1,8 +1,6 @@
 defmodule Porter2.WordSpec do
   use ESpec
 
-  it do: expect true |> to(be_true())
-
   describe ".trim_leading_apostrophe" do
     it "should remove a leading apostrophe in a word" do
       "'cos" 
@@ -141,7 +139,7 @@ defmodule Porter2.WordSpec do
       it "should replace the suffix with 'ee' if the suffix is in the r1 region" do
         "stingweed"
         |> Porter2.Word.replace_suffixes
-        |> expect |> to( eq "stringwee" )
+        |> expect |> to( eq "stingwee" )
       end
 
       it "should not replace the suffix if the suffix is not in the r1 region" do
@@ -373,31 +371,58 @@ defmodule Porter2.WordSpec do
       end
     end
 
+    context "a word ending with 'y'" do
+      it "should replace the suffix with an 'i' if it is preceeded by a non-vowel and the word is longer than 2 letters" do
+        "cry"
+        |> Porter2.Word.replace_suffixes
+        |> expect |> to( eq "cri" )
+      end
 
-    it "should replace an 'ingly' suffix with 'e' if the suffix is preceeded by 'at'"
-    it "should replace an 'ingly' suffix with 'e' if the suffix is preceeded by 'bl'"
-    it "should replace an 'ingly' suffix with 'e' if the suffix is preceeded by 'iz'"
-    it "should remove an 'ingly' suffix and remove one of a doubled letter if the suffix is preceeded by a doubled letter"
-    it "should replace an 'ingly' suffix with an 'e' if the word without the suffix is short"
-    it "should remove an 'ingly' suffix if it is not preceeded by 'at', 'bl' or 'iz'"
+      it "should not replace the suffix if the suffix is not preceeded by a non-vowel" do
+        "say"
+        |> Porter2.Word.replace_suffixes
+        |> expect |> to( eq "say" )
+      end
 
-    it "should replace an 'ed' suffix with 'e' if the suffix is preceeded by 'at'"
-    it "should replace an 'ed' suffix with 'e' if the suffix is preceeded by 'bl'"
-    it "should replace an 'ed' suffix with 'e' if the suffix is preceeded by 'iz'"
-    it "should remove an 'ed' suffix and remove one of a doubled letter if the suffix is preceeded by a doubled letter"
-    it "should replace an 'ed' suffix with an 'e' if the word without the suffix is short"
-    it "should remove an 'ed' suffix if it is not preceeded by 'at', 'bl' or 'iz'"
+      it "should not replace the suffix if the word is only 2 letters long and the suffix is preceeded by a vowel" do
+        "oy"
+        |> Porter2.Word.replace_suffixes
+        |> expect |> to( eq "oy" )
+      end
+
+      it "should not replace the suffix if the word is only 2 letters long and the suffix is preceeded by a non-vowel" do
+        "by"
+        |> Porter2.Word.replace_suffixes
+        |> expect |> to( eq "by" )
+      end
+    end
 
 
-    it "should replace a 'y' suffix with an 'i' if it is preceeded by a non-vowel and the word is longer than 2 letters"
-    it "should not replace a 'y' suffix if the suffix is not preceeded by a non-vowel"
-    it "should not replace a 'y' suffix if the word is only 2 letters long and the suffix is preceeded by a vowel"
-    it "should not replace a 'y' suffix if the word is only 2 letters long and the suffix is preceeded by a non-vowel"
+    context "a word ending with 'Y'" do
+      it "should replace the suffix with an 'i' if it is preceeded by a non-vowel and the word is longer than 2 letters" do
+        "crY"
+        |> Porter2.Word.replace_suffixes
+        |> expect |> to( eq "cri" )
+      end
 
-    it "should replace a 'Y' suffix with an 'i' if it is preceeded by a non-vowel and the word is longer than 2 letters"
-    it "should not replace a 'Y' suffix if the suffix is not preceeded by a non-vowel"
-    it "should not replace a 'Y' suffix if the word is only 2 letters long and the suffix is preceeded by a vowel"
-    it "should not replace a 'Y' suffix if the word is only 2 letters long and the suffix is preceeded by a non-vowel"
+      it "should not replace the suffix if the suffix is not preceeded by a non-vowel" do
+        "saY"
+        |> Porter2.Word.replace_suffixes
+        |> expect |> to( eq "saY" )
+      end
+
+      it "should not replace the suffix if the word is only 2 letters long and the suffix is preceeded by a vowel" do
+        "oY"
+        |> Porter2.Word.replace_suffixes
+        |> expect |> to( eq "oY" )
+      end
+
+      it "should not replace the suffix if the word is only 2 letters long and the suffix is preceeded by a non-vowel" do
+        "bY"
+        |> Porter2.Word.replace_suffixes
+        |> expect |> to( eq "bY" )
+      end
+    end
   end
 
   context ".r1_region" do
@@ -410,26 +435,26 @@ defmodule Porter2.WordSpec do
     end
 
     context "for a word that as no non-vowel following a vowel" do
-      it "should return nil" do
+      it "should return \"\"" do
         "foo"
         |> Porter2.Word.r1_region
-        |> expect |> to( eq nil )
+        |> expect |> to( eq "" )
       end
     end
 
     context "for a word that has no word part following the vowel <> non-vowel sequence" do
-      it "should return nil" do
+      it "should return \"\"" do
         "it"
         |> Porter2.Word.r1_region
-        |> expect |> to( eq nil )
+        |> expect |> to( eq "" )
       end
     end
 
     context "for a word that has no vowel" do
-      it "should return nil" do
+      it "should return \"\"" do
         "psst"
         |> Porter2.Word.r1_region
-        |> expect |> to( eq nil )
+        |> expect |> to( eq "" )
       end
     end
   end
@@ -439,7 +464,7 @@ defmodule Porter2.WordSpec do
       it "should return true" do
         "tetris"
         |> Porter2.Word.word_ends_in_short_syllable?
-        |> expect |> to( be_true )
+        |> expect |> to( be_true() )
       end
     end
 
@@ -447,7 +472,7 @@ defmodule Porter2.WordSpec do
       it "should return false" do
         "now"
         |> Porter2.Word.word_ends_in_short_syllable?
-        |> expect |> to( be_false )
+        |> expect |> to( be_false() )
       end
     end
 
@@ -455,7 +480,7 @@ defmodule Porter2.WordSpec do
       it "should return false" do
         "sex"
         |> Porter2.Word.word_ends_in_short_syllable?
-        |> expect |> to( be_false )
+        |> expect |> to( be_false() )
       end
     end
 
@@ -463,7 +488,7 @@ defmodule Porter2.WordSpec do
       it "should return false" do
         "feY"
         |> Porter2.Word.word_ends_in_short_syllable?
-        |> expect |> to( be_false )
+        |> expect |> to( be_false() )
       end
     end
 
@@ -471,7 +496,7 @@ defmodule Porter2.WordSpec do
       it "should return false" do
         "seemingly"
         |> Porter2.Word.word_ends_in_short_syllable?
-        |> expect |> to( be_false )
+        |> expect |> to( be_false() )
       end
     end
 
@@ -479,7 +504,7 @@ defmodule Porter2.WordSpec do
       it "should return false" do
         "ring"
         |> Porter2.Word.word_ends_in_short_syllable?
-        |> expect |> to( be_false )
+        |> expect |> to( be_false() )
       end
     end
 
@@ -487,7 +512,7 @@ defmodule Porter2.WordSpec do
       it "should return false" do
         "a"
         |> Porter2.Word.word_ends_in_short_syllable?
-        |> expect |> to( be_false )
+        |> expect |> to( be_false() )
       end
     end
   end
@@ -497,7 +522,7 @@ defmodule Porter2.WordSpec do
       it "should return true" do
         "spin"
         |> Porter2.Word.is_word_short?
-        |> expect |> to( be_true )
+        |> expect |> to( be_true() )
       end
     end
 
@@ -507,15 +532,15 @@ defmodule Porter2.WordSpec do
       it "should return false" do
         "sex"
         |> Porter2.Word.is_word_short?
-        |> expect |> to( be_false )
+        |> expect |> to( be_false() )
       end
     end
 
     context "if the word does not end in a short syllable and r1_region is not nil" do
       it "should return false" do
         "ring"
-        |> Porter2.Word.is_word_short?\
-        |> expect |> to( be_false )
+        |> Porter2.Word.is_word_short?
+        |> expect |> to( be_false() )
       end
     end
   end
