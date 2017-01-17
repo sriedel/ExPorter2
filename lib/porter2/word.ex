@@ -194,4 +194,244 @@ defmodule Porter2.Word do
     ( r1_region( word ) == "" ) && word_ends_in_short_syllable?( word )
   end
 
+  def primary_special_suffix_replacement( word ) do
+    word
+    |> String.reverse
+    |> primary_suffix_replacement
+    |> String.reverse
+  end
+
+  defp primary_suffix_replacement( "noitazi" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "noitazi" <> _rest -> "ezi" <> reversed_prefix
+      _                  -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "lanoita" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "lanoita" <> _rest -> "eta" <> reversed_prefix
+      _                  -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "ssenluf" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "ssenluf" <> _rest -> "luf" <> reversed_prefix
+      _                  -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "ssensuo" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "ssensuo" <> _rest -> "suo" <> reversed_prefix
+      _                  -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "ssenevi" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "ssenevi" <> _rest -> "evi" <> reversed_prefix
+      _                  -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "lanoit" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "lanoit" <> _rest -> "noit" <> reversed_prefix
+      _                 -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "itilib" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "itilib" <> _rest -> "elb" <> reversed_prefix
+      _                 -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "ilssel" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "ilssel" <> _rest -> "ssel" <> reversed_prefix
+      _                 -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "ilsuo" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "ilsuo" <> _rest -> "suo" <> reversed_prefix
+      _                -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "itivi" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "itivi" <> _rest -> "evi" <> reversed_prefix
+       _               -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "illuf" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "illuf" <> _rest -> "luf" <> reversed_prefix
+      _                -> word
+    end
+  end
+  defp primary_suffix_replacement( "iltne" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "iltne" <> _rest -> "tne" <> reversed_prefix
+      _                -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "noita" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "noita" <> _rest -> "eta" <> reversed_prefix
+      _                -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "msila" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "msila" <> _rest -> "la" <> reversed_prefix
+      _                -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "itila" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "itila" <> _rest -> "la" <> reversed_prefix
+      _                -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "icne" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "icne" <> _rest -> "ecne" <> reversed_prefix
+      _               -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "icna" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "icna" <> _rest -> "ecna" <> reversed_prefix
+      _               -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "ilba" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "ilba" <> _rest -> "elba" <> reversed_prefix
+      _               -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "rota" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "rota" <> _rest -> "eta" <> reversed_prefix
+      _               -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "illa" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "illa" <> _rest -> "la" <> reversed_prefix
+      _               -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "rezi" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "rezi" <> _rest -> "ezi" <> reversed_prefix
+      _               -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "igol" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "igo" <> _rest -> "gol" <> reversed_prefix
+      _              -> word
+    end
+  end
+  defp primary_suffix_replacement( "igo" <> reversed_prefix = word ), do: word
+
+  defp primary_suffix_replacement( "ilb" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "ilb" <> _rest -> "elb" <> reversed_prefix
+      _              -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "ilc" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "il" <> _rest -> "c" <> reversed_prefix
+      _             -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "ild" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "il" <> _rest -> "d" <> reversed_prefix
+      _             -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "ile" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "il" <> _rest -> "e" <> reversed_prefix
+      _             -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "ilg" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "il" <> _rest -> "g" <> reversed_prefix
+      _             -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "ilh" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "il" <> _rest -> "h" <> reversed_prefix
+      _             -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "ilk" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "il" <> _rest -> "k" <> reversed_prefix
+      _             -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "ilm" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "il" <> _rest -> "m" <> reversed_prefix
+      _             -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "iln" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "il" <> _rest -> "n" <> reversed_prefix
+      _             -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "ilr" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "il" <> _rest -> "r" <> reversed_prefix
+      _             -> word
+    end
+  end
+
+  defp primary_suffix_replacement( "ilt" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "il" <> _rest -> "t" <> reversed_prefix
+      _             -> word
+    end
+  end
+
+  defp primary_suffix_replacement( word ), do: word
+
 end

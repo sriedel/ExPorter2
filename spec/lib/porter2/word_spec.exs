@@ -469,4 +469,363 @@ defmodule Porter2.WordSpec do
       end
     end
   end
+
+  context ".primary_special_suffix_replacement" do
+    let :tested_function, do: &Porter2.Word.primary_special_suffix_replacement/1
+
+    context "for a word with the suffix 'tional'" do
+      it "should replace the suffix by 'tion' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "optional", "option" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "tritional", "tritional" )
+      end
+    end
+
+    context "for a word with the suffix 'enci'" do
+      it "should replace the suffix by 'ence' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "valenci", "valence" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "trenci", "trenci" )
+      end
+    end
+
+    context "for a word with the suffix 'anci'" do
+      it "should replace the suffix by 'ance' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "balanci", "balance" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "truanci", "truanci" )
+      end
+    end
+
+    context "for a word with the suffix 'abli'" do
+      it "should replace the suffix by 'able' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "favorabli", "favorable" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "viabli", "viabli" )
+      end
+    end
+
+    context "for a word with the suffix 'entli'" do
+      it "should replace the suffix by 'ent' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "virulentli", "virulent" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "gentli", "gentli" )
+      end
+    end
+
+    context "for a word with the suffix 'izer'" do
+      it "should replace the suffix by 'ize' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "vaporizer", "vaporize" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "sizer", "sizer" )
+      end
+    end
+    context "for a word with the suffix 'ization'" do
+      it "should replace the suffix by 'ize' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "nationalization", "nationalize" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "xization", "xization" )
+      end
+    end
+
+    context "for a word with the suffix 'ational'" do
+      it "should replace the suffix by 'ate' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "vocational", "vocate" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "national", "national" )
+      end
+    end
+
+    context "for a word with the suffix 'ation'" do
+      it "should replace the suffix by 'ate' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "sensation", "sensate" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "nation", "nation" )
+      end
+    end
+
+    context "for a word with the suffix 'ator'" do
+      it "should replace the suffix by 'ate' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "violator", "violate" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "gator", "gator" )
+      end
+    end
+
+    context "for a word with the suffix 'alism'" do
+      it "should replace the suffix by 'al' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "nationalism", "national" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "dualism", "dualism" )
+      end
+    end
+
+    context "for a word with the suffix 'aliti'" do
+      it "should replace the suffix by 'al' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "vitaliti", "vital" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "realiti", "realiti" )
+      end
+    end
+
+    context "for a word with the suffix 'alli'" do
+      it "should replace the suffix by 'al' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "verballi", "verbal" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "alli", "alli" )
+      end
+    end
+
+    context "for a word with the suffix 'fulness'" do
+      it "should replace the suffix by 'ful' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "usefulness", "useful" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "xfulness", "xfulness" )
+      end
+    end
+
+    context "for a word with the suffix 'ousli'" do
+      it "should replace the suffix by 'ous' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "zealousli", "zealous" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "piously", "piously" )
+      end
+    end
+
+    context "for a word with the suffix 'ousness'" do
+      it "should replace the suffix by 'ous' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "tediousness", "tedious" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "piousness", "piousness" )
+      end
+    end
+
+    context "for a word with the suffix 'iveness'" do
+      it "should replace the suffix by 'ive' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "aliveness", "alive" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "liveness", "liveness" )
+      end
+    end
+
+    context "for a word with the suffix 'iviti'" do
+      it "should replace the suffix by 'ive' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "nativiti", "native" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "naiviti", "naiviti" )
+      end
+    end
+
+    context "for a word with the suffix 'biliti'" do
+      it "should replace the suffix by 'ble' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "sensibiliti", "sensible" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "abiliti", "abiliti" )
+      end
+    end
+
+    context "for a word with the suffix 'bli'" do
+      it "should replace the suffix by 'ble' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "wobbli", "wobble" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "abli", "abli" )
+      end
+    end
+
+    context "for a word with the suffix 'ogi'" do
+      context "and the suffix is preceeded by an 'l'" do
+        it "should replace the suffix by 'og' if the suffix is in the r1 region" do
+          expect_processed_word_to_match( "virologi", "virolog" )
+        end
+
+        it "should not replace the suffix if it is not in the r1 region" do
+          expect_processed_word_to_match( "xlogi", "xlogi" )
+        end
+      end
+
+      context "and the suffix is not preceeded by an 'l'" do
+        it "should not replace the suffix if it is in the r1 region" do
+          expect_processed_word_to_match( "pedagogi", "pedagogi" )
+        end
+
+        it "should not replace the suffix if it is not in the r1 region" do
+          expect_processed_word_to_match( "fogi", "fogi" )
+        end
+      end
+    end
+
+    context "for a word with the suffix 'fulli'" do
+      it "should replace the suffix by 'ful' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "awefulli", "aweful" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "fulli", "fulli" )
+      end
+    end
+
+    context "for a word with the suffix 'lessli'" do
+      it "should replace the suffix by 'less' if the suffix is in the r1 region" do
+        expect_processed_word_to_match( "effortlessli", "effortless" )
+      end
+
+      it "should not replace the suffix if it is not in the r1 region" do
+        expect_processed_word_to_match( "xlessli", "xlessli" )
+      end
+    end
+
+    context "for a word with the suffix 'li'" do
+      context "and the suffix is preceeded by a valid 'li' ending" do
+        context "for a 'c' ending" do
+          it "should delete the suffix if the suffix is in the r1 region" do
+            expect_processed_word_to_match( "publicli", "public" )
+          end
+
+          it "should not delete the suffix if it is not in the r1 region" do
+            expect_processed_word_to_match( "cli", "cli" )
+          end
+        end
+
+        context "for a 'd' ending" do
+          it "should delete the suffix if the suffix is in the r1 region" do
+            expect_processed_word_to_match( "wildli", "wild" )
+          end
+
+          it "should not delete the suffix if it is not in the r1 region" do
+            expect_processed_word_to_match( "dli", "dli" )
+          end
+        end
+
+        context "for an 'e' ending" do
+          it "should delete the suffix if the suffix is in the r1 region" do
+            expect_processed_word_to_match( "wiseli", "wise" )
+          end
+
+          it "should not delete the suffix if it is not in the r1 region" do
+            expect_processed_word_to_match( "reli", "reli" )
+          end
+        end
+
+        context "for a 'g' ending" do
+          it "should delete the suffix if the suffix is in the r1 region" do
+            expect_processed_word_to_match( "wrongli", "wrong" )
+          end
+
+          it "should not delete the suffix if it is not in the r1 region" do
+            expect_processed_word_to_match( "xgli", "xgli" )
+          end
+        end
+
+        context "for an 'h' ending" do
+          it "should delete the suffix if the suffix is in the r1 region" do
+            expect_processed_word_to_match( "richli", "rich" )
+          end
+
+          it "should not delete the suffix if it is not in the r1 region" do
+            expect_processed_word_to_match( "xhli", "xhli" )
+          end
+        end
+
+        context "for a 'k' ending" do
+          it "should delete the suffix if the suffix is in the r1 region" do
+            expect_processed_word_to_match( "sickli", "sick" )
+          end
+
+          it "should not delete the suffix if it is not in the r1 region" do
+            expect_processed_word_to_match( "wkli", "wkli" )
+          end
+        end
+
+        context "for an 'm' ending" do
+          it "should delete the suffix if the suffix is in the r1 region" do
+            expect_processed_word_to_match( "primli", "prim" )
+          end
+
+          it "should not delete the suffix if it is not in the r1 region" do
+            expect_processed_word_to_match( "xmly", "xmly" )
+          end
+        end
+
+        context "for an 'n' ending" do
+          it "should delete the suffix if the suffix is in the r1 region" do
+            expect_processed_word_to_match( "wanli", "wan" )
+          end
+
+          it "should not delete the suffix if it is not in the r1 region" do
+            expect_processed_word_to_match( "xnli", "xnli" )
+          end
+        end
+
+        context "for an 'r' ending" do
+          it "should delete the suffix if the suffix is in the r1 region" do
+            expect_processed_word_to_match( "surli", "sur" )
+          end
+
+          it "should not delete the suffix if it is not in the r1 region" do
+            expect_processed_word_to_match( "xrli", "xrli" )
+          end
+        end
+
+        context "for a 't' ending" do
+          it "should delete the suffix if the suffix is in the r1 region" do
+            expect_processed_word_to_match( "wetli", "wet" )
+          end
+
+          it "should not delete the suffix if it is not in the r1 region" do
+            expect_processed_word_to_match( "xtli", "xtli" )
+          end
+        end
+      end
+
+      context "and the suffix is not preceeded by a valid 'li' ending" do
+        it "should not delete the suffix if it is in the r1 region" do
+          expect_processed_word_to_match( "exli", "exli" )
+        end
+
+        it "should not delete the suffix if it is not in the r1 region" do
+          expect_processed_word_to_match( "ali", "ali" )
+        end
+      end
+    end
+  end
 end
