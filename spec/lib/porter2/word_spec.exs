@@ -1021,4 +1021,198 @@ defmodule Porter2.WordSpec do
       end
     end
   end
+
+  context ".primary_suffix_deletion" do
+    let :tested_function, do: &Porter2.Word.primary_suffix_deletion/1
+
+    context "for a word with the suffix 'al'" do
+      it "should delete the suffix if the suffix is part of the r2 region" do
+        expect_processed_word_to_match( "sensational", "sensation" )
+      end
+
+      it "should not replace the suffix if it is not part of the r2 region" do
+        expect_processed_word_to_match( "duval", "duval" )
+      end
+    end
+
+    context "for a word with the suffix 'ance'" do
+      it "should delete the suffix if the suffix is part of the r2 region" do
+        expect_processed_word_to_match( "transmittance", "transmitt" )
+      end
+
+      it "should not replace the suffix if it is not part of the r2 region" do
+        expect_processed_word_to_match( "valance", "valance" )
+      end
+    end
+
+    context "for a word with the suffix 'ence'" do
+      it "should delete the suffix if the suffix is part of the r2 region" do
+        expect_processed_word_to_match( "virulence", "virul" )
+      end
+
+      it "should not replace the suffix if it is not part of the r2 region" do
+        expect_processed_word_to_match( "thence", "thence" )
+      end
+    end
+
+    context "for a word with the suffix 'er'" do
+      it "should delete the suffix if the suffix is part of the r2 region" do
+        expect_processed_word_to_match( "zoroaster", "zoroast" )
+      end
+
+      it "should not replace the suffix if it is not part of the r2 region" do
+        expect_processed_word_to_match( "yer", "yer" )
+      end
+    end
+
+    context "for a word with the suffix 'ic'" do
+      it "should delete the suffix if the suffix is part of the r2 region" do
+        expect_processed_word_to_match( "realistic", "realist" )
+      end
+
+      it "should not replace the suffix if it is not part of the r2 region" do
+        expect_processed_word_to_match( "bic", "bic" )
+      end
+    end
+
+    context "for a word with the suffix 'able'" do
+      it "should delete the suffix if the suffix is part of the r2 region" do
+        expect_processed_word_to_match( "vulnerable", "vulner" )
+      end
+
+      it "should not replace the suffix if it is not part of the r2 region" do
+        expect_processed_word_to_match( "worktable", "worktable" )
+      end
+    end
+
+    context "for a word with the suffix 'ible'" do
+      it "should delete the suffix if the suffix is part of the r2 region" do
+        expect_processed_word_to_match( "invincible", "invinc" )
+      end
+
+      it "should not replace the suffix if it is not part of the r2 region" do
+        expect_processed_word_to_match( "vincible", "vincible" )
+      end
+    end
+
+    context "for a word with the suffix 'ant'" do
+      it "should delete the suffix if the suffix is part of the r2 region" do
+        expect_processed_word_to_match( "succulant", "succul" )
+      end
+
+      it "should not replace the suffix if it is not part of the r2 region" do
+        expect_processed_word_to_match( "ant", "ant" )
+      end
+    end
+
+    context "for a word with the suffix 'ement'" do
+      it "should delete the suffix if the suffix is part of the r2 region" do
+        expect_processed_word_to_match( "understatement", "understat" )
+      end
+
+      it "should not replace the suffix if it is not part of the r2 region" do
+        expect_processed_word_to_match( "vehement", "vehement" )
+      end
+    end
+
+    context "for a word with the suffix 'ment'" do
+      it "should delete the suffix if the suffix is part of the r2 region" do
+        expect_processed_word_to_match( "unemployment", "unemploy" )
+      end
+
+      it "should not replace the suffix if it is not part of the r2 region" do
+        expect_processed_word_to_match( "worriment", "worriment" )
+      end
+    end
+
+    context "for a word with the suffix 'ent'" do
+      it "should delete the suffix if the suffix is part of the r2 region" do
+        expect_processed_word_to_match( "unintelligent", "unintellig" )
+      end
+
+      it "should not replace the suffix if it is not part of the r2 region" do
+        expect_processed_word_to_match( "bent", "bent" )
+      end
+    end
+
+    context "for a word with the suffix 'ism'" do
+      it "should delete the suffix if the suffix is part of the r2 region" do
+        expect_processed_word_to_match( "sensationalism", "sensational" )
+      end
+
+      it "should not replace the suffix if it is not part of the r2 region" do
+        expect_processed_word_to_match( "truism", "truism" )
+      end
+    end
+
+    context "for a word with the suffix 'ate'" do
+      it "should delete the suffix if the suffix is part of the r2 region" do
+        expect_processed_word_to_match( "suffrocate", "suffroc" )
+      end
+
+      it "should not replace the suffix if it is not part of the r2 region" do
+        expect_processed_word_to_match( "fate", "fate" )
+      end
+    end
+
+    context "for a word with the suffix 'iti'" do
+      it "should delete the suffix if the suffix is part of the r2 region" do
+        expect_processed_word_to_match( "viciniti", "vicin" )
+      end
+
+      it "should not replace the suffix if it is not part of the r2 region" do
+        expect_processed_word_to_match( "bitti", "bitti" )
+      end
+    end
+
+    context "for a word with the suffix 'ous'" do
+      it "should delete the suffix if the suffix is part of the r2 region" do
+        expect_processed_word_to_match( "veracious", "veraci" )
+      end
+
+      it "should not replace the suffix if it is not part of the r2 region" do
+        expect_processed_word_to_match( "yous", "yous" )
+      end
+    end
+
+    context "for a word with the suffix 'ive'" do
+      it "should delete the suffix if the suffix is part of the r2 region" do
+        expect_processed_word_to_match( "unobtrusive", "unobtrus" )
+      end
+
+      it "should not replace the suffix if it is not part of the r2 region" do
+        expect_processed_word_to_match( "wive", "wive" )
+      end
+    end
+
+    context "for a word with the suffix 'ize'" do
+      it "should delete the suffix if the suffix is part of the r2 region" do
+        expect_processed_word_to_match( "trivialize", "trivial" )
+      end
+
+      it "should not replace the suffix if it is not part of the r2 region" do
+        expect_processed_word_to_match( "mize", "mize" )
+      end
+    end
+
+    context "for a word with the suffix 'ion'" do
+      context "if the suffix is part of the r2 region" do
+        it "should delete the suffix if the suffix is preceeded by an 's'" do
+          expect_processed_word_to_match( "transmission", "transmiss" )
+        end
+
+        it "should delete the suffix if the suffix is preceeded by a 't'" do
+          expect_processed_word_to_match( "virtualization", "virtualizat" )
+        end
+
+        it "should not delete the suffix if the suffix is not preceeded by an 's' or a 't'" do
+          expect_processed_word_to_match( "zillion", "zillion" ) 
+        end
+      end
+
+      it "should not replace the suffix if it is not part of the r2 region" do
+        expect_processed_word_to_match( "ration", "ration" )
+      end
+    end
+  end
 end

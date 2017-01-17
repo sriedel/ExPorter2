@@ -521,6 +521,133 @@ defmodule Porter2.Word do
 
   defp secondary_suffix_replacement( word ), do: word
 
+  def primary_suffix_deletion( word ) do
+    word
+    |> String.reverse
+    |> reversed_primary_suffix_deletion
+    |> String.reverse
+  end
+
+  defp reversed_primary_suffix_deletion( "tneme" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "tneme" <> _rest -> reversed_prefix
+      _                -> word
+    end
+  end
+
+  defp reversed_primary_suffix_deletion( "ecna" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "ecna" <> _rest -> reversed_prefix
+      _              -> word
+    end
+  end
+
+  defp reversed_primary_suffix_deletion( "ecne" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "ecne" <> _rest -> reversed_prefix
+      _              -> word
+    end
+  end
+
+  defp reversed_primary_suffix_deletion( "elba" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "elba" <> _rest -> reversed_prefix
+      _              -> word
+    end
+  end
+
+  defp reversed_primary_suffix_deletion( "elbi" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "elbi" <> _rest -> reversed_prefix
+      _              -> word
+    end
+  end
+  defp reversed_primary_suffix_deletion( "tnem" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "tnem" <> _rest -> reversed_prefix
+      _              -> word
+    end
+  end
+  defp reversed_primary_suffix_deletion( "tna" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "tna" <> _rest -> reversed_prefix
+      _              -> word
+    end
+  end
+  defp reversed_primary_suffix_deletion( "tne" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "tne" <> _rest -> reversed_prefix
+      _              -> word
+    end
+  end
+  defp reversed_primary_suffix_deletion( "msi" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "msi" <> _rest -> reversed_prefix
+      _              -> word
+    end
+  end
+  defp reversed_primary_suffix_deletion( "eta" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "eta" <> _rest -> reversed_prefix
+      _              -> word
+    end
+  end
+  defp reversed_primary_suffix_deletion( "iti" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "iti" <> _rest -> reversed_prefix
+      _              -> word
+    end
+  end
+  defp reversed_primary_suffix_deletion( "suo" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "suo" <> _rest -> reversed_prefix
+      _              -> word
+    end
+  end
+  defp reversed_primary_suffix_deletion( "evi" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "evi" <> _rest -> reversed_prefix
+      _              -> word
+    end
+  end
+  defp reversed_primary_suffix_deletion( "ezi" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "ezi" <> _rest -> reversed_prefix
+      _              -> word
+    end
+  end
+  defp reversed_primary_suffix_deletion( "nois" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "noi" <> _rest -> "s" <> reversed_prefix
+      _              -> word
+    end
+  end
+  defp reversed_primary_suffix_deletion( "noit" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "noi" <> _rest -> "t" <> reversed_prefix
+      _              -> word
+    end
+  end
+  defp reversed_primary_suffix_deletion( "la" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "la" <> _rest -> reversed_prefix
+      _              -> word
+    end
+  end
+  defp reversed_primary_suffix_deletion( "re" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "re" <> _rest -> reversed_prefix
+      _              -> word
+    end
+  end
+  defp reversed_primary_suffix_deletion( "ci" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "ci" <> _rest -> reversed_prefix
+      _              -> word
+    end
+  end
+  defp reversed_primary_suffix_deletion( word ), do: word
+
   
 
 end
