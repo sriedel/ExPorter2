@@ -384,6 +384,99 @@ defmodule Porter2.WordSpec do
     end
   end
 
+  context ".r2_region" do
+    context "for a word with an empty r1 region" do
+      it "should return \"\"" do
+        "it"
+        |> Porter2.Word.r2_region
+        |> expect |> to( eq "" )
+      end
+    end
+
+    context "for a word with an r1 region" do
+      context "for a word that contains a non-vowel following a vowel within the r1 region" do
+        it "should return the word part after this non-vowel" do
+          "foobarbaz"
+          |> Porter2.Word.r2_region
+          |> expect |> to( eq "baz" )
+        end
+      end
+
+      context "for a word that as no non-vowel following a vowel within the r1 region" do
+        it "should return \"\"" do
+          "foobao"
+          |> Porter2.Word.r2_region
+          |> expect |> to( eq "" )
+        end
+      end
+
+      context "for a word that has no word part following the vowel <> non-vowel sequence within the r1 region" do
+        it "should return \"\"" do
+          "foobar"
+          |> Porter2.Word.r2_region
+          |> expect |> to( eq "" )
+        end
+      end
+
+      context "for a word that has no vowel within the r1 region" do
+        it "should return \"\"" do
+          "foobrr"
+          |> Porter2.Word.r2_region
+          |> expect |> to( eq "" )
+        end
+      end
+    end
+  end
+
+  context ".reverse_r2_region" do
+    context "for a word with an empty r1 region" do
+      it "should return \"\"" do
+        "it"
+        |> String.reverse
+        |> Porter2.Word.reverse_r2_region
+        |> expect |> to( eq "" )
+      end
+    end
+
+    context "for a word with an r1 region" do
+      context "for a word that contains a non-vowel following a vowel within the r1 region" do
+        it "should return the word part after this non-vowel" do
+          "foobarbaz"
+          |> String.reverse
+          |> Porter2.Word.reverse_r2_region
+          |> expect |> to( eq "zab" )
+        end
+      end
+
+      context "for a word that as no non-vowel following a vowel within the r1 region" do
+        it "should return \"\"" do
+          "foobao"
+          |> String.reverse
+          |> Porter2.Word.reverse_r2_region
+          |> expect |> to( eq "" )
+        end
+      end
+
+      context "for a word that has no word part following the vowel <> non-vowel sequence within the r1 region" do
+        it "should return \"\"" do
+          "foobar"
+          |> String.reverse
+          |> Porter2.Word.reverse_r2_region
+          |> expect |> to( eq "" )
+        end
+      end
+
+      context "for a word that has no vowel within the r1 region" do
+        it "should return \"\"" do
+          "foobrr"
+          |> String.reverse
+          |> Porter2.Word.reverse_r2_region
+          |> expect |> to( eq "" )
+        end
+      end
+    end
+  end
+
   context ".word_ends_in_short_syllable?" do
     context "for a word with a suffix of the type 'non-vowel' <> 'vowel' <> 'non-vowel other than w, x or Y'" do
       it "should return true" do
@@ -825,6 +918,106 @@ defmodule Porter2.WordSpec do
         it "should not delete the suffix if it is not in the r1 region" do
           expect_processed_word_to_match( "ali", "ali" )
         end
+      end
+    end
+  end
+
+  context ".secondary_special_suffix_replacement" do
+    let :tested_function, do: &Porter2.Word.secondary_special_suffix_replacement/1
+
+    context "for a word with the suffix 'ational'" do
+      it "should replace the suffix with 'ate' if the suffix is part of the r1 region" do
+        expect_processed_word_to_match( "sensational", "sensate" )
+      end
+
+      it "should not replace the suffix if it is not part of the r1 region" do
+        expect_processed_word_to_match( "rational", "rational" )
+      end
+    end
+
+    context "for a word with the suffix 'tional'" do
+      it "should replace the suffix with 'tion' if the suffix is part of the r1 region" do
+        expect_processed_word_to_match( "optional", "option" )
+      end
+
+      it "should not replace the suffix if it is not part of the r1 region" do
+        expect_processed_word_to_match( "ational", "ational" )
+      end
+    end
+
+    context "for a word with the suffix 'alize'" do
+      it "should replace the suffix with 'al' if the suffix is part of the r1 region" do
+        expect_processed_word_to_match( "rationalize", "rational" )
+      end
+
+      it "should not replace the suffix if it is not part of the r1 region" do
+        expect_processed_word_to_match( "malize", "malize" )
+      end
+    end
+
+    context "for a word with the suffix 'ative'" do
+      context "and suffix is in the r1 region" do
+        it "should delete the suffix if it is also in the r2 region" do
+          expect_processed_word_to_match( "ruminative", "rumin" )
+        end
+
+        it "should not delete the suffix if it is not also in the r2 region" do
+          expect_processed_word_to_match( "talkative", "talkative" )
+        end
+      end
+
+      it "should not delete the suffix if it is not part of the r1 region" do
+        expect_processed_word_to_match( "native", "native" )
+      end
+    end
+
+    context "for a word with the suffix 'icate'" do
+      it "should replace the suffix with 'ic' if the suffix is part of the r1 region" do
+        expect_processed_word_to_match( "replicate", "replic" )
+      end
+
+      it "should not replace the suffix if it is not part of the r1 region" do
+        expect_processed_word_to_match( "bicate", "bicate" )
+      end
+    end
+
+    context "for a word with the suffix 'iciti'" do
+      it "should replace the suffix with 'ic' if the suffix is part of the r1 region" do
+        expect_processed_word_to_match( "dupliciti", "duplic" )
+      end
+
+      it "should not replace the suffix if it is not part of the r1 region" do
+        expect_processed_word_to_match( "diciti", "diciti" )
+      end
+    end
+
+    context "for a word with the suffix 'ical'" do
+      it "should replace the suffix with 'ic' if the suffix is part of the r1 region" do
+        expect_processed_word_to_match( "comical", "comic" )
+      end
+
+      it "should not replace the suffix if it is not part of the r1 region" do
+        expect_processed_word_to_match( "ical", "ical" )
+      end
+    end
+
+    context "for a word with the suffix 'ness'" do
+      it "should delete the suffix if the suffix is part of the r1 region" do
+        expect_processed_word_to_match( "awefulness", "aweful" )
+      end
+
+      it "should not delete the suffix if it is not part of the r1 region" do
+        expect_processed_word_to_match( "xness", "xness" )
+      end
+    end
+
+    context "for a word with the suffix 'ful'" do
+      it "should delete the suffix if the suffix is part of the r1 region" do
+        expect_processed_word_to_match( "awful", "aw" )
+      end
+
+      it "should not delete the suffix if it is not part of the r1 region" do
+        expect_processed_word_to_match( "aful", "aful" )
       end
     end
   end

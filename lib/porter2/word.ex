@@ -186,6 +186,21 @@ defmodule Porter2.Word do
     end
   end
 
+  def r2_region( word ) do
+    # we can't use a regex with lookbehind here, as the lookbehind region needs
+    # to be of fixed length (sr 2017-01-17)
+    word
+    |> r1_region
+    |> r1_region
+  end
+
+  def reverse_r2_region( drow ) do
+    case Regex.run( ~r/^.*(?=[^aeiouy][aeiouy].*[^aeiouy][aeiouy])/, drow, capture: :first ) do
+      x when is_list( x ) -> hd( x )
+      _                   -> ""
+    end
+  end
+
   def word_ends_in_short_syllable?( word ) do
     Regex.match?( ~r/[^aeiouy][aeiouy][^aeioywxY]$/, word )
   end
@@ -353,7 +368,7 @@ defmodule Porter2.Word do
       _              -> word
     end
   end
-  defp primary_suffix_replacement( "igo" <> reversed_prefix = word ), do: word
+  defp primary_suffix_replacement( "igo" <> _reversed_prefix = word ), do: word
 
   defp primary_suffix_replacement( "ilb" <> reversed_prefix = word ) do
     case reverse_r1_region( word ) do
@@ -433,5 +448,79 @@ defmodule Porter2.Word do
   end
 
   defp primary_suffix_replacement( word ), do: word
+
+  def secondary_special_suffix_replacement( word ) do
+    word
+    |> String.reverse
+    |> secondary_suffix_replacement
+    |> String.reverse
+  end
+
+  defp secondary_suffix_replacement( "lanoita" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "lanoita" <> _rest -> "eta" <> reversed_prefix
+      _                  -> word
+    end
+  end
+
+  defp secondary_suffix_replacement( "lanoit" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "lanoit" <> _rest -> "noit" <> reversed_prefix
+      _                 -> word
+    end
+  end
+
+  defp secondary_suffix_replacement( "ezila" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "ezila" <> _rest -> "la" <> reversed_prefix
+      _                 -> word
+    end
+  end
+
+  defp secondary_suffix_replacement( "evita" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "evita" <> _rest -> reversed_prefix
+      _                -> word
+    end
+  end
+
+  defp secondary_suffix_replacement( "etaci" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "etaci" <> _rest -> "ci" <> reversed_prefix
+      _                -> word
+    end
+  end
+
+  defp secondary_suffix_replacement( "itici" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "itici" <> _rest -> "ci" <> reversed_prefix
+      _                -> word
+    end
+  end
+
+  defp secondary_suffix_replacement( "laci" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "laci" <> _rest -> "ci" <> reversed_prefix
+      _               -> word
+    end
+  end
+
+  defp secondary_suffix_replacement( "ssen" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "ssen" <> _rest -> reversed_prefix
+      _               -> word
+    end
+  end
+
+  defp secondary_suffix_replacement( "luf" <> reversed_prefix = word ) do
+    case reverse_r1_region( word ) do
+      "luf" <> _rest -> reversed_prefix
+      _              -> word
+    end
+  end
+
+  defp secondary_suffix_replacement( word ), do: word
+
+  
 
 end
