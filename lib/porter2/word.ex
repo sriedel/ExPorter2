@@ -631,7 +631,7 @@ defmodule Porter2.Word do
   defp reversed_primary_suffix_deletion( "la" <> reversed_prefix = word ) do
     case reverse_r2_region( word ) do
       "la" <> _rest -> reversed_prefix
-      _              -> word
+      _             -> word
     end
   end
   defp reversed_primary_suffix_deletion( "re" <> reversed_prefix = word ) do
@@ -649,5 +649,34 @@ defmodule Porter2.Word do
   defp reversed_primary_suffix_deletion( word ), do: word
 
   
+  def secondary_suffix_deletion( word ) do
+    word
+    |> String.reverse
+    |> reversed_secondary_suffix_deletion
+    |> String.reverse
+  end
+
+  defp reversed_secondary_suffix_deletion( "ll" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "l" <> _rest -> "l" <> reversed_prefix
+      _            -> word
+    end
+  end
+
+  defp reversed_secondary_suffix_deletion( "e" <> reversed_prefix = word ) do
+    case reverse_r2_region( word ) do
+      "e" <> _rest  -> reversed_prefix
+      _             -> case reverse_r1_region( word ) do
+                         "e" <> _rest -> if word_ends_in_short_syllable?( String.reverse( reversed_prefix ) ) do
+                                           reversed_prefix
+                                         else
+                                           word
+                                         end
+                         _            -> word
+                       end
+    end
+  end
+
+  defp reversed_secondary_suffix_deletion( word ), do: word
 
 end

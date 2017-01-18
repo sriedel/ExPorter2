@@ -1215,4 +1215,60 @@ defmodule Porter2.WordSpec do
       end
     end
   end
+
+  context ".secondary_suffix_deletion" do
+    let :tested_function, do: &Porter2.Word.secondary_suffix_deletion/1
+
+    context "for a word with the suffix 'e'" do
+      context "if the suffix is within the r2 region" do
+        it "should delete the suffix" do
+          expect_processed_word_to_match( "yuletide", "yuletid" )
+        end
+      end
+
+      context "if the suffix is not within the r2 region" do
+        context "but the suffix is within the r1 region" do
+          context "and the suffix is not preceeded by a short syllable" do
+            it "should delete the suffix" do
+              expect_processed_word_to_match( "overawe", "overaw" )
+            end
+          end
+
+          context "and the suffix is preceeded by a short syllable" do
+            it "should not delete the suffix" do
+              expect_processed_word_to_match( "yule", "yule" )
+            end
+          end
+        end
+
+        context "and the suffix is also not part of the r1 region" do
+          it "should not delete the suffix" do
+            expect_processed_word_to_match( "ye", "ye" )
+          end
+        end
+      end
+    end
+
+    context "for a word with the suffix 'l'" do
+      context "if the suffix is not within the r2 region" do
+        it "should not delete the suffix" do
+          expect_processed_word_to_match( "yell", "yell" )
+        end
+      end
+
+      context "if the suffix is within the r2 region" do
+        context "and the suffix is preceeded by another 'l'" do
+          it "should delete the suffix" do
+            expect_processed_word_to_match( "uphill", "uphil" )
+          end
+        end
+
+        context "and the suffix is not preceeded by an 'l'" do
+          it "should not delete the suffix" do
+            expect_processed_word_to_match( "withdrawal", "withdrawal" )
+          end
+        end
+      end
+    end
+  end
 end
