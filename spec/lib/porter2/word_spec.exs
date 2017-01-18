@@ -1236,7 +1236,7 @@ defmodule Porter2.WordSpec do
 
           context "and the suffix is preceeded by a short syllable" do
             it "should not delete the suffix" do
-              expect_processed_word_to_match( "yule", "yule" )
+              expect_processed_word_to_match( "knife", "knife" )
             end
           end
         end

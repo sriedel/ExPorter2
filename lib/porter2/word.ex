@@ -41,6 +41,9 @@ defmodule Porter2.Word do
     new_suffix <> reversed_prefix
   end
 
+  defp replace_reversed_suffixes( "ss" <> _reversed_prefix = word ), do: word
+  defp replace_reversed_suffixes( "su" <> _reversed_prefix = word ), do: word
+
   defp replace_reversed_suffixes( "s" <> reversed_prefix = word ) do
     if Regex.match?( ~r/^.+[aeiouy]/, reversed_prefix ) do
       reversed_prefix
@@ -112,6 +115,8 @@ defmodule Porter2.Word do
       word
     end
   end
+
+  defp replace_reversed_suffixes( word ), do: word
 
   defp replace_adverb_suffix( "ta" <> _reversed_prefix = word ) do
     "e" <> word
@@ -668,9 +673,9 @@ defmodule Porter2.Word do
       "e" <> _rest  -> reversed_prefix
       _             -> case reverse_r1_region( word ) do
                          "e" <> _rest -> if word_ends_in_short_syllable?( String.reverse( reversed_prefix ) ) do
-                                           reversed_prefix
-                                         else
                                            word
+                                         else
+                                           reversed_prefix
                                          end
                          _            -> word
                        end
