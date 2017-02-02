@@ -21,26 +21,22 @@ defmodule Porter2.Word do
     Regex.match?( ~r/[aeiouy]/, word )
   end
 
-  defp replace_reversed_suffixes( "sess" <> reversed_prefix ) do
-    "ss" <> reversed_prefix
+  defp replace_reversed_suffix_if_prefix_contains_vowels( reversed_prefix, word ) do
+    if contains_vowels?( reversed_prefix ) do
+      reversed_prefix 
+      |> replace_adverb_suffix
+    else
+      word
+    end
   end
 
-  defp replace_reversed_suffixes( "dei" <> reversed_prefix ) do
-    new_suffix = case String.length( reversed_prefix ) do
-                   x when x <= 1 -> "ei"
-                   _             -> "i"
-                 end
-    new_suffix <> reversed_prefix 
-  end
-
-  defp replace_reversed_suffixes( "sei" <> reversed_prefix ) do
-    new_suffix = case String.length( reversed_prefix ) do
-                   x when x <= 1 -> "ei"
-                   _             -> "i"
-                 end
-    new_suffix <> reversed_prefix
-  end
-
+  defp replace_reversed_suffixes( "sess" <> reversed_prefix ), do: "ss" <> reversed_prefix
+  defp replace_reversed_suffixes( <<"dei">> ), do: "ei"
+  defp replace_reversed_suffixes( <<"dei", reversed_prefix::binary-size(1)>> ), do: "ei" <> reversed_prefix
+  defp replace_reversed_suffixes( "dei" <> reversed_prefix ), do: "i" <> reversed_prefix
+  defp replace_reversed_suffixes( <<"sei">> ), do: "ei"
+  defp replace_reversed_suffixes( <<"sei", reversed_prefix::binary-size(1)>> ), do: "ei" <> reversed_prefix
+  defp replace_reversed_suffixes( "sei" <> reversed_prefix ), do: "i" <> reversed_prefix
   defp replace_reversed_suffixes( "ss" <> _reversed_prefix = word ), do: word
   defp replace_reversed_suffixes( "su" <> _reversed_prefix = word ), do: word
 
@@ -53,53 +49,27 @@ defmodule Porter2.Word do
   end
 
   defp replace_reversed_suffixes( "yldee" <> reversed_prefix = word ) do
-    case reverse_r1_region( word ) do
-      "yldee" <> _rest -> "ee" <> reversed_prefix
-      _                -> word
-    end
+    replace_reversed_suffix_in_r1( word, "yldee", reversed_prefix, "ee" )
   end
 
   defp replace_reversed_suffixes( "ylgni" <> reversed_prefix = word ) do
-    if contains_vowels?( reversed_prefix ) do
-      reversed_prefix 
-      |> replace_adverb_suffix
-    else
-      word
-    end
+    replace_reversed_suffix_if_prefix_contains_vowels( reversed_prefix, word )
   end
 
   defp replace_reversed_suffixes( "ylde" <> reversed_prefix = word ) do
-    if contains_vowels?( reversed_prefix ) do
-      reversed_prefix 
-      |> replace_adverb_suffix
-    else
-      word
-    end
+    replace_reversed_suffix_if_prefix_contains_vowels( reversed_prefix, word )
   end
 
   defp replace_reversed_suffixes( "dee" <> reversed_prefix = word ) do
-    case reverse_r1_region( word ) do
-      "dee" <> _rest -> "ee" <> reversed_prefix
-      _              -> word
-    end
+    replace_reversed_suffix_in_r1( word, "dee", reversed_prefix, "ee" )
   end
 
   defp replace_reversed_suffixes( "gni" <> reversed_prefix = word ) do
-    if contains_vowels?( reversed_prefix ) do
-      reversed_prefix 
-      |> replace_adverb_suffix
-    else
-      word
-    end
+    replace_reversed_suffix_if_prefix_contains_vowels( reversed_prefix, word )
   end
 
   defp replace_reversed_suffixes( "de" <> reversed_prefix = word ) do
-    if contains_vowels?( reversed_prefix ) do
-      reversed_prefix 
-      |> replace_adverb_suffix
-    else
-      word
-    end
+    replace_reversed_suffix_if_prefix_contains_vowels( reversed_prefix, word )
   end
 
   defp replace_reversed_suffixes( "y" <> reversed_prefix = word ) do
@@ -330,6 +300,15 @@ defmodule Porter2.Word do
     end
   end
 
+  defp replace_reversed_suffix_in_r2( word, suffix, prefix, replacement ) do
+    if String.starts_with?( reverse_r2_region( word ), suffix ) do
+      replacement <> prefix
+    else
+      word
+    end
+  end
+
+
   def secondary_special_suffix_replacement( word ) do
     word
     |> String.reverse
@@ -338,66 +317,39 @@ defmodule Porter2.Word do
   end
 
   defp secondary_suffix_replacement( "lanoita" <> reversed_prefix = word ) do
-    case reverse_r1_region( word ) do
-      "lanoita" <> _rest -> "eta" <> reversed_prefix
-      _                  -> word
-    end
+    replace_reversed_suffix_in_r1( word, "lanoita", reversed_prefix, "eta" )
   end
 
   defp secondary_suffix_replacement( "lanoit" <> reversed_prefix = word ) do
-    case reverse_r1_region( word ) do
-      "lanoit" <> _rest -> "noit" <> reversed_prefix
-      _                 -> word
-    end
+    replace_reversed_suffix_in_r1( word, "lanoit", reversed_prefix, "noit" )
   end
 
   defp secondary_suffix_replacement( "ezila" <> reversed_prefix = word ) do
-    case reverse_r1_region( word ) do
-      "ezila" <> _rest -> "la" <> reversed_prefix
-      _                 -> word
-    end
+    replace_reversed_suffix_in_r1( word, "ezila", reversed_prefix, "la" )
   end
 
   defp secondary_suffix_replacement( "evita" <> reversed_prefix = word ) do
-    case reverse_r2_region( word ) do
-      "evita" <> _rest -> reversed_prefix
-      _                -> word
-    end
+    replace_reversed_suffix_in_r2( word, "evita", reversed_prefix, "" )
   end
 
   defp secondary_suffix_replacement( "etaci" <> reversed_prefix = word ) do
-    case reverse_r1_region( word ) do
-      "etaci" <> _rest -> "ci" <> reversed_prefix
-      _                -> word
-    end
+    replace_reversed_suffix_in_r1( word, "etaci", reversed_prefix, "ci" )
   end
 
   defp secondary_suffix_replacement( "itici" <> reversed_prefix = word ) do
-    case reverse_r1_region( word ) do
-      "itici" <> _rest -> "ci" <> reversed_prefix
-      _                -> word
-    end
+    replace_reversed_suffix_in_r1( word, "itici", reversed_prefix, "ci" )
   end
 
   defp secondary_suffix_replacement( "laci" <> reversed_prefix = word ) do
-    case reverse_r1_region( word ) do
-      "laci" <> _rest -> "ci" <> reversed_prefix
-      _               -> word
-    end
+    replace_reversed_suffix_in_r1( word, "laci", reversed_prefix, "ci" )
   end
 
   defp secondary_suffix_replacement( "ssen" <> reversed_prefix = word ) do
-    case reverse_r1_region( word ) do
-      "ssen" <> _rest -> reversed_prefix
-      _               -> word
-    end
+    replace_reversed_suffix_in_r1( word, "ssen", reversed_prefix, "" )
   end
 
   defp secondary_suffix_replacement( "luf" <> reversed_prefix = word ) do
-    case reverse_r1_region( word ) do
-      "luf" <> _rest -> reversed_prefix
-      _              -> word
-    end
+    replace_reversed_suffix_in_r1( word, "luf", reversed_prefix, "" )
   end
 
   defp secondary_suffix_replacement( word ), do: word
@@ -410,122 +362,61 @@ defmodule Porter2.Word do
   end
 
   defp reversed_primary_suffix_deletion( "tneme" <> reversed_prefix = word ) do
-    case reverse_r2_region( word ) do
-      "tneme" <> _rest -> reversed_prefix
-      _                -> word
-    end
+    replace_reversed_suffix_in_r2( word, "tneme", reversed_prefix, "" )
   end
-
   defp reversed_primary_suffix_deletion( "ecna" <> reversed_prefix = word ) do
-    case reverse_r2_region( word ) do
-      "ecna" <> _rest -> reversed_prefix
-      _              -> word
-    end
+    replace_reversed_suffix_in_r2( word, "ecna", reversed_prefix, "" )
   end
-
   defp reversed_primary_suffix_deletion( "ecne" <> reversed_prefix = word ) do
-    case reverse_r2_region( word ) do
-      "ecne" <> _rest -> reversed_prefix
-      _              -> word
-    end
+    replace_reversed_suffix_in_r2( word, "ecne", reversed_prefix, "" )
   end
-
   defp reversed_primary_suffix_deletion( "elba" <> reversed_prefix = word ) do
-    case reverse_r2_region( word ) do
-      "elba" <> _rest -> reversed_prefix
-      _              -> word
-    end
+    replace_reversed_suffix_in_r2( word, "elba", reversed_prefix, "" )
   end
-
   defp reversed_primary_suffix_deletion( "elbi" <> reversed_prefix = word ) do
-    case reverse_r2_region( word ) do
-      "elbi" <> _rest -> reversed_prefix
-      _              -> word
-    end
+    replace_reversed_suffix_in_r2( word, "elbi", reversed_prefix, "" )
   end
   defp reversed_primary_suffix_deletion( "tnem" <> reversed_prefix = word ) do
-    case reverse_r2_region( word ) do
-      "tnem" <> _rest -> reversed_prefix
-      _              -> word
-    end
+    replace_reversed_suffix_in_r2( word, "tnem", reversed_prefix, "" )
   end
   defp reversed_primary_suffix_deletion( "tna" <> reversed_prefix = word ) do
-    case reverse_r2_region( word ) do
-      "tna" <> _rest -> reversed_prefix
-      _              -> word
-    end
+    replace_reversed_suffix_in_r2( word, "tna", reversed_prefix, "" )
   end
   defp reversed_primary_suffix_deletion( "tne" <> reversed_prefix = word ) do
-    case reverse_r2_region( word ) do
-      "tne" <> _rest -> reversed_prefix
-      _              -> word
-    end
+    replace_reversed_suffix_in_r2( word, "tne", reversed_prefix, "" )
   end
   defp reversed_primary_suffix_deletion( "msi" <> reversed_prefix = word ) do
-    case reverse_r2_region( word ) do
-      "msi" <> _rest -> reversed_prefix
-      _              -> word
-    end
+    replace_reversed_suffix_in_r2( word, "msi", reversed_prefix, "" )
   end
   defp reversed_primary_suffix_deletion( "eta" <> reversed_prefix = word ) do
-    case reverse_r2_region( word ) do
-      "eta" <> _rest -> reversed_prefix
-      _              -> word
-    end
+    replace_reversed_suffix_in_r2( word, "eta", reversed_prefix, "" )
   end
   defp reversed_primary_suffix_deletion( "iti" <> reversed_prefix = word ) do
-    case reverse_r2_region( word ) do
-      "iti" <> _rest -> reversed_prefix
-      _              -> word
-    end
+    replace_reversed_suffix_in_r2( word, "iti", reversed_prefix, "" )
   end
   defp reversed_primary_suffix_deletion( "suo" <> reversed_prefix = word ) do
-    case reverse_r2_region( word ) do
-      "suo" <> _rest -> reversed_prefix
-      _              -> word
-    end
+    replace_reversed_suffix_in_r2( word, "suo", reversed_prefix, "" )
   end
   defp reversed_primary_suffix_deletion( "evi" <> reversed_prefix = word ) do
-    case reverse_r2_region( word ) do
-      "evi" <> _rest -> reversed_prefix
-      _              -> word
-    end
+    replace_reversed_suffix_in_r2( word, "evi", reversed_prefix, "" )
   end
   defp reversed_primary_suffix_deletion( "ezi" <> reversed_prefix = word ) do
-    case reverse_r2_region( word ) do
-      "ezi" <> _rest -> reversed_prefix
-      _              -> word
-    end
+    replace_reversed_suffix_in_r2( word, "ezi", reversed_prefix, "" )
   end
   defp reversed_primary_suffix_deletion( "nois" <> reversed_prefix = word ) do
-    case reverse_r2_region( word ) do
-      "noi" <> _rest -> "s" <> reversed_prefix
-      _              -> word
-    end
+    replace_reversed_suffix_in_r2( word, "nois", reversed_prefix, "s" )
   end
   defp reversed_primary_suffix_deletion( "noit" <> reversed_prefix = word ) do
-    case reverse_r2_region( word ) do
-      "noi" <> _rest -> "t" <> reversed_prefix
-      _              -> word
-    end
+    replace_reversed_suffix_in_r2( word, "noit", reversed_prefix, "t" )
   end
   defp reversed_primary_suffix_deletion( "la" <> reversed_prefix = word ) do
-    case reverse_r2_region( word ) do
-      "la" <> _rest -> reversed_prefix
-      _             -> word
-    end
+    replace_reversed_suffix_in_r2( word, "la", reversed_prefix, "" )
   end
   defp reversed_primary_suffix_deletion( "re" <> reversed_prefix = word ) do
-    case reverse_r2_region( word ) do
-      "re" <> _rest -> reversed_prefix
-      _              -> word
-    end
+    replace_reversed_suffix_in_r2( word, "re", reversed_prefix, "" )
   end
   defp reversed_primary_suffix_deletion( "ci" <> reversed_prefix = word ) do
-    case reverse_r2_region( word ) do
-      "ci" <> _rest -> reversed_prefix
-      _              -> word
-    end
+    replace_reversed_suffix_in_r2( word, "ci", reversed_prefix, "" )
   end
   defp reversed_primary_suffix_deletion( word ), do: word
 
