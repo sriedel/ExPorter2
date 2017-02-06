@@ -29,6 +29,8 @@ defmodule Porter2.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    [ {:espec, "1.2.1", only: :test} ]
+    [ {:espec, "1.2.1", only: :test},
+      {:credo, "~> 0.5", only: [ :test, :dev ] } 
+    ]
   end
 end

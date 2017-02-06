@@ -1,2 +1,4 @@
-%{"espec": {:hex, :espec, "1.2.1", "faf0b54502688401097d8cb36da3f9ba75f894a39bccc65e5ae7bffb1256f03e", [:mix], [{:meck, "~> 0.8.4", [hex: :meck, optional: false]}]},
+%{"bunt": {:hex, :bunt, "0.2.0", "951c6e801e8b1d2cbe58ebbd3e616a869061ddadcc4863d0a2182541acae9a38", [:mix], []},
+  "credo": {:hex, :credo, "0.6.1", "a941e2591bd2bd2055dc92b810c174650b40b8290459c89a835af9d59ac4a5f8", [:mix], [{:bunt, "~> 0.2.0", [hex: :bunt, optional: false]}]},
+  "espec": {:hex, :espec, "1.2.1", "faf0b54502688401097d8cb36da3f9ba75f894a39bccc65e5ae7bffb1256f03e", [:mix], [{:meck, "~> 0.8.4", [hex: :meck, optional: false]}]},
   "meck": {:hex, :meck, "0.8.4", "59ca1cd971372aa223138efcf9b29475bde299e1953046a0c727184790ab1520", [:make, :rebar], []}}
