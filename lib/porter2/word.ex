@@ -39,10 +39,10 @@ defmodule Porter2.Word do
 
   defp replace_reversed_suffixes( "sess" <> reversed_prefix ), do: "ss" <> reversed_prefix
   defp replace_reversed_suffixes( <<"dei">> ), do: "ei"
-  defp replace_reversed_suffixes( <<"dei", reversed_prefix::binary-size(1)>> ), do: "ei" <> reversed_prefix
+  defp replace_reversed_suffixes( <<"dei", reversed_prefix::binary-size( 1 )>> ), do: "ei" <> reversed_prefix
   defp replace_reversed_suffixes( "dei" <> reversed_prefix ), do: "i" <> reversed_prefix
   defp replace_reversed_suffixes( <<"sei">> ), do: "ei"
-  defp replace_reversed_suffixes( <<"sei", reversed_prefix::binary-size(1)>> ), do: "ei" <> reversed_prefix
+  defp replace_reversed_suffixes( <<"sei", reversed_prefix::binary-size( 1 )>> ), do: "ei" <> reversed_prefix
   defp replace_reversed_suffixes( "sei" <> reversed_prefix ), do: "i" <> reversed_prefix
   defp replace_reversed_suffixes( "ss" <> _reversed_prefix = word ), do: word
   defp replace_reversed_suffixes( "su" <> _reversed_prefix = word ), do: word
