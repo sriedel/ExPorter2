@@ -36,6 +36,12 @@ defmodule Porter2 do
   def start_link, do: GenServer.start_link( __MODULE__, :ok, [] )
 
   @doc """
+    Stops the GenServer
+  """
+  @spec stop( pid ) :: :ok
+  def stop( server ), do: GenServer.stop( server )
+
+  @doc """
     Calls the given GenServer pid to stem the given word
   """
   @spec stem( pid, binary ) :: binary
@@ -53,8 +59,8 @@ defmodule Porter2 do
   @doc """
     GenServer callback for stemming a word.
   """
-  @spec handle_call( { atom, binary } ) :: { atom, any }
-  def handle_call( { :stem, word } ) when is_binary( word ) do
-    { :reply, stem( word ) }
+  @spec handle_call( { atom, binary }, pid, map ) :: { atom, any, map }
+  def handle_call( { :stem, word }, _from, state ) when is_binary( word ) do
+    { :reply, stem( word ), state }
   end
 end
