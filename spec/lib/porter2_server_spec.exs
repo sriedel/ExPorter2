@@ -2,6 +2,9 @@ defmodule Porter2ServerSpec do
   use ESpec
 
   @word_to_stemmed_map %{
+    ""              => "",
+    "a"             => "a",
+    "ab"            => "ab",
     "consign"       => "consign",
     "consigned"     => "consign",
     "consigning"    => "consign",
