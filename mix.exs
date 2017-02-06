@@ -9,7 +9,21 @@ defmodule Porter2.Mixfile do
      start_permanent: Mix.env == :prod,
      preferred_cli_env: [ espec: :test ],
      test_coverage: [ tool: Coverex.Task ],
-     deps: deps()]
+     deps: deps(),
+     description: "Implementation of the Porter2 stemming algorithm for the english language",
+     package: package()
+   ]
+  end
+
+  # Configuring package attributes for hex.pm
+  def package do
+    [ 
+      name: :porter2,
+      files: [ "lib", "config", "mix.exs", "README.md" ],
+      maintainers: [ "Sven Riedel" ],
+      licenses: [ "GPL 2" ],
+      links: %{ "GitHub" => "https://github.com/sriedel/ExPorter2" }
+    ]
   end
 
   # Configuration for the OTP application
