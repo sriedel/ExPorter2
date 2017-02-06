@@ -8,6 +8,7 @@ defmodule Porter2.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      preferred_cli_env: [ espec: :test ],
+     test_coverage: [ tool: Coverex.Task ],
      deps: deps()]
   end
 
@@ -30,7 +31,8 @@ defmodule Porter2.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [ {:espec, "1.2.1", only: :test},
-      {:credo, "~> 0.5", only: [ :test, :dev ] } 
+      {:credo, "~> 0.5", only: [ :test, :dev ] },
+      {:coverex, "~> 1.4.10", only: :test }
     ]
   end
 end
