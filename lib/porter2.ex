@@ -9,6 +9,7 @@ defmodule Porter2 do
   Please note that special word forms are currently not regarded separately.
   """
 
+  @spec stem( binary ) :: binary
   def stem( word ) when byte_size( word ) < 3, do: word
   def stem( word ) do
     Regex.replace( ~r/^'\s*/, String.trim( word ), "", global: false )

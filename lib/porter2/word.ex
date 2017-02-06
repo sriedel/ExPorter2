@@ -1,15 +1,22 @@
 defmodule Porter2.Word do
+  @moduledoc """
+  Functions concerned with the actual stemming and associated helper functions
+  """
+  @spec trim_leading_apostrophe( binary ) :: binary
   def trim_leading_apostrophe( "'" <> rest ), do: rest
   def trim_leading_apostrophe( word ), do: word
 
+  @spec transform_vowel_ys( binary ) :: binary
   def transform_vowel_ys( word ) do
     Regex.replace( ~r/(\A|[aeiouy])y/, word, "\\1Y" )
   end
 
+  @spec remove_apostrophe_s_suffix( binary ) :: binary
   def remove_apostrophe_s_suffix( word ) do 
     Regex.replace( ~r/'s?'?\z/, word, "" )
   end
 
+  @spec replace_suffixes( binary ) :: binary
   def replace_suffixes( word ) do
     word
     |> String.reverse
@@ -114,6 +121,7 @@ defmodule Porter2.Word do
     end
   end
 
+  @spec r1_region( binary ) :: binary
   def r1_region( word ) do
     case Regex.run( ~r/(?<=[aeiouy][^aeiouy]).*$/, word, capture: :first ) do
       x when is_list( x ) -> hd( x )
@@ -121,6 +129,7 @@ defmodule Porter2.Word do
     end
   end
 
+  @spec reverse_r1_region( binary ) :: binary
   def reverse_r1_region( drow ) do
     case Regex.run( ~r/^.*(?=[^aeiouy][aeiouy])/, drow, capture: :first ) do
       x when is_list( x ) -> hd( x )
@@ -128,6 +137,7 @@ defmodule Porter2.Word do
     end
   end
 
+  @spec r2_region( binary ) :: binary
   def r2_region( word ) do
     # we can't use a regex with lookbehind here, as the lookbehind region needs
     # to be of fixed length (sr 2017-01-17)
@@ -136,21 +146,25 @@ defmodule Porter2.Word do
     |> r1_region
   end
 
+  @spec reverse_r2_region( binary ) :: binary
   def reverse_r2_region( drow ) do
     case Regex.run( ~r/^.*(?=[^aeiouy][aeiouy].*[^aeiouy][aeiouy])/, drow, capture: :first ) do
       x when is_list( x ) -> hd( x )
       _                   -> ""
     end
   end
-
+  
+  @spec word_ends_in_short_syllable?( binary ) :: boolean
   def word_ends_in_short_syllable?( word ) do
     Regex.match?( ~r/[^aeiouy][aeiouy][^aeioywxY]$/, word )
   end
 
+  @spec is_word_short?( binary ) :: boolean
   def is_word_short?( word ) do
     ( r1_region( word ) == "" ) && word_ends_in_short_syllable?( word )
   end
 
+  @spec primary_special_suffix_replacement( binary ) :: binary
   def primary_special_suffix_replacement( word ) do
     word
     |> String.reverse
@@ -308,7 +322,7 @@ defmodule Porter2.Word do
     end
   end
 
-
+  @spec secondary_special_suffix_replacement( binary ) :: binary
   def secondary_special_suffix_replacement( word ) do
     word
     |> String.reverse
@@ -354,6 +368,7 @@ defmodule Porter2.Word do
 
   defp secondary_suffix_replacement( word ), do: word
 
+  @spec primary_suffix_deletion( binary ) :: binary
   def primary_suffix_deletion( word ) do
     word
     |> String.reverse
@@ -420,7 +435,8 @@ defmodule Porter2.Word do
   end
   defp reversed_primary_suffix_deletion( word ), do: word
 
-  
+ 
+  @spec secondary_suffix_deletion( binary ) :: binary
   def secondary_suffix_deletion( word ) do
     word
     |> String.reverse
