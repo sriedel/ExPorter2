@@ -47,7 +47,7 @@ defmodule Porter2.Mixfile do
     [ {:espec, "1.6.3", only: :test},
       {:credo, "~> 0.5", only: [ :test, :dev ] },
       {:coverex, "~> 1.4.10", only: :test },
-      {:exdoc, ">= 0.0.0", only: :dev }
+      {:ex_doc, ">= 0.0.0", only: :dev }
     ]
   end
 end
