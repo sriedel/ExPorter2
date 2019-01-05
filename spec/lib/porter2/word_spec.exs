@@ -88,6 +88,17 @@ defmodule Porter2.WordSpec do
       end
     end
 
+    context "words with an 'ss' suffix" do
+      it "should not remove the suffix" do
+        expect_processed_word_to_match( "fuss", "fuss" )
+      end
+    end
+
+    context "words with an 'us' suffix" do
+      it "should not remove the suffix" do
+        expect_processed_word_to_match( "dingus", "dingus" )
+      end
+    end
   
     context "words with an 's' suffix" do
       it "should remove the suffix if there is a vowel in the word that is not directly preceeding the suffix" do
@@ -252,8 +263,40 @@ defmodule Porter2.WordSpec do
           expect_processed_word_to_match( "agonizingly", "agonize" )
         end
 
-        it "should remove the suffix and remove one of a doubled letter if the suffix is preceeded by a doubled letter" do
+        it "should remove the suffix and remove one of a doubled letter if the suffix is preceeded by a double b" do
+          expect_processed_word_to_match( "sobbingly", "sob" )
+        end
+
+        it "should remove the suffix and remove one of a doubled letter if the suffix is preceeded by a double d" do
+          expect_processed_word_to_match( "forbiddingly", "forbid" )
+        end
+
+        it "should remove the suffix and remove one of a doubled letter if the suffix is preceeded by a double f" do
+          expect_processed_word_to_match( "fluffingly", "fluf" )
+        end
+
+        it "should remove the suffix and remove one of a doubled letter if the suffix is preceeded by a double g" do
+          expect_processed_word_to_match( "unflaggingly", "unflag" )
+        end
+
+        it "should remove the suffix and remove one of a doubled letter if the suffix is preceeded by a double m" do
+          expect_processed_word_to_match( "swimmingly", "swim" )
+        end
+
+        it "should remove the suffix and remove one of a doubled letter if the suffix is preceeded by a double n" do
+          expect_processed_word_to_match( "cunningly", "cun" )
+        end
+
+        it "should remove the suffix and remove one of a doubled letter if the suffix is preceeded by a double p" do
           expect_processed_word_to_match( "hoppingly", "hop" )
+        end
+
+        it "should remove the suffix and remove one of a doubled letter if the suffix is preceeded by a double r" do
+          expect_processed_word_to_match( "jarringly", "jar" )
+        end
+
+        it "should remove the suffix and remove one of a doubled letter if the suffix is preceeded by a double t" do
+          expect_processed_word_to_match( "fittingly", "fit" )
         end
 
         it "should replace the suffix with an 'e' if the word without the suffix is short" do

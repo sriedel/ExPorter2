@@ -1,4 +1,6 @@
 defmodule Porter2 do
+  use GenServer
+
   alias Porter2.Word
 
   @moduledoc """
@@ -9,6 +11,10 @@ defmodule Porter2 do
   Please note that special word forms are currently not regarded separately.
   """
 
+  @doc """
+  Stems the given word; works without the GenServer.
+  """
+  @spec stem( binary ) :: binary
   def stem( word ) when byte_size( word ) < 3, do: word
   def stem( word ) do
     Regex.replace( ~r/^'\s*/, String.trim( word ), "", global: false )
@@ -21,5 +27,40 @@ defmodule Porter2 do
     |> Word.primary_suffix_deletion # Step 4 according to snowball
     |> Word.secondary_suffix_deletion # step 5 according to snowball
     |> String.downcase
+  end
+
+  @doc """
+    Starts the GenServer
+  """
+  @spec start_link() :: none
+  def start_link, do: GenServer.start_link( __MODULE__, :ok, [] )
+
+  @doc """
+    Stops the GenServer
+  """
+  @spec stop( pid ) :: :ok
+  def stop( server ), do: GenServer.stop( server )
+
+  @doc """
+    Calls the given GenServer pid to stem the given word
+  """
+  @spec stem( pid, binary ) :: binary
+  def stem( server, word ) do
+    GenServer.call( server, { :stem, word } )
+  end
+
+  ### GenServer callbacks
+  @doc """
+    GenServer callback for initialization
+  """
+  @spec init( :ok ) :: { :ok, map }
+  def init( :ok ), do: { :ok, %{} }
+
+  @doc """
+    GenServer callback for stemming a word.
+  """
+  @spec handle_call( { atom, binary }, pid, map ) :: { atom, any, map }
+  def handle_call( { :stem, word }, _from, state ) when is_binary( word ) do
+    { :reply, stem( word ), state }
   end
 end

@@ -1,4 +1,4 @@
-defmodule Porter2Spec do
+defmodule Porter2ServerSpec do
   use ESpec
 
   @word_to_stemmed_map %{
@@ -87,37 +87,21 @@ defmodule Porter2Spec do
     "knots"         => "knot"
   }
 
-  defp map_diff( map1, map2 ) when is_map( map1 ) and is_map( map2 ) do
-    entries_in_both_maps = Map.take( map2, Map.keys( map1 ) )
-    entries_only_in_map1 = Map.drop( map1, Map.keys( map2 ) )
-    entries_only_in_map2 = Map.drop( map2, Map.keys( map1 ) )
-    keys_with_differing_values = entries_in_both_maps
-                                 |> Map.keys
-                                 |> Enum.filter( &( Map.fetch( map1, &1 ) != Map.fetch( map2, &1 ) ) )
-    IO.puts "Entries only in map 1: "
-    IO.inspect entries_only_in_map1
-    IO.puts "---"
-    IO.puts "Entries only in map 2: "
-    IO.inspect entries_only_in_map2
-    IO.puts "---"
-    IO.puts "Entries with differing values:"
-    IO.puts "map 1"
-    IO.inspect Map.take( map1, keys_with_differing_values )
-    IO.puts "map 2"
-    IO.inspect Map.take( map2, keys_with_differing_values )
-
+  before do
+    { :ok, server } = Porter2.start_link
+    { :shared, server: server }
   end
-  describe ".stem" do
+
+  finally do
+    Porter2.stop( shared.server )
+  end
+
+  context "Stemming with a GenServer" do
     it "should perform the stemming as expected" do
       actual_stemmed_map = for { word, _expected_stemmed } <- @word_to_stemmed_map,
                              into: %{},
-                             do: { word, Porter2.stem( word ) }
-      # map_diff( @word_to_stemmed_map, actual_stemmed_map )
+                             do: { word, Porter2.stem( shared.server, word ) }
       expect actual_stemmed_map |> to( eq @word_to_stemmed_map )
     end
-
   end
-
-
-
 end

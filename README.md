@@ -1,6 +1,13 @@
 # Porter2
 
-**TODO: Add description**
+A naive implementation of the Porter2 stemming algorithm as described on
+http://snowballstem.org/algorithms/english/stemmer.html
+
+The implementation is not as clean as could be, especially the reverse processing
+of words is not as consequent as could be - words are reversed more often than
+needs be.
+
+
 
 ## Installation
 
